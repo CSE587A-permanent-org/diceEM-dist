@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "diceem"
+version = "1.0.0"
+description = "An assignment template for the Expectation Maximization module for CSE 587A"
+authors = ["michael brent <mbrent@wustl.edu>", "chase mateusiak <chase.mateusiak@gmail.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+packages = [{ include = "diceEM"}]
+exclude = ["tests", "docsource", "docs", "Makefile", "make.bat"] 
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+# To use the github vesion of utils, comment the line below and uncomment the 
+# one below that. To use local copy of utils reverse.
+# cse587autils = { path = "../cse587Autils", develop = true }
+cse587autils = { git = "https://github.com/CSE587A-permanent-org/cse587Autils.git" }
+numpy = "^1.25.1"
+gradescope-utils = "^0.5.0"
+matplotlib = "^3.9.1"
+
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^7.1.1"
+nbsphinx = "^0.9.2"
+ipykernel = "^6.25.0"
+autopep8 = "^2.0.2"
+furo = "^2023.7.26"
+flake8 = "^6.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

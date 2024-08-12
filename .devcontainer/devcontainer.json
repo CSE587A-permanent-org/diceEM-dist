@@ -1,0 +1,42 @@
+{
+	"name": "poetry3-poetry",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	// #TODO Change source of utils to github before pushing to github
+	// comment mounts statement below when pushing to github, reverse for local utils
+	// "mounts": [
+ 	// "source=/Users/brent/D/Teaching/Bio5495/private/2-probability/python-solutions/cse587Autils,target=/workspaces/cse587Autils,type=bind"
+  	// ],
+
+	// Features to add to the Dev Container. More info: https://containers.dev/implementors/features.
+	// "features": {},
+
+	// 👇 Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// 👇 Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "",
+	"postStartCommand": "cd ${containerWorkspaceFolder} && poetry config virtualenvs.in-project true && poetry install",
+
+	// 👇 Configure tool-specific properties.
+	"customizations": {
+        "vscode": {
+          "extensions":["ms-python.python", 
+                        "njpwerner.autodocstring", 
+						"ms-toolsai.jupyter",
+						"ms-python.mypy-type-checker"],
+			"settings": {"python.pythonPath": "${workspaceFolder}/.venv/bin/python"}
+            }
+		},
+		
+		"features": {
+			"ghcr.io/devcontainers/features/common-utils:2": {},
+			"ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {},
+			"ghcr.io/jungaretti/features/vim:1": {},
+			"ghcr.io/wxw-matt/devcontainer-features/command_runner:0": {}
+		}
+	// 👇 Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
