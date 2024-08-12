@@ -294,7 +294,3 @@ class TestDiceEM(unittest.TestCase):
         logger.info("actual_num_iterations: %s", actual_num_iterations)
         # difference is ~0.028
         self.assertTrue(estimated_bag_of_dice - expected_bag < 1e-1)
-
-# class TestLocalInstall(unittest.TestCase):
-#     def test_hello(self):
-#         self.assertEqual(hello_world(), "hello Chase")
