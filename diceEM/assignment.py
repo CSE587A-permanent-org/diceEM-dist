@@ -7,58 +7,6 @@ from cse587Autils.DiceObjects.BagOfDice import BagOfDice
 
 logger = logging.getLogger(__name__)
 
-#<snip>
-def dice_posterior(sample_draw: NDArray[np.int_], bag_of_dice: BagOfDice) -> float:
-    """Calculates the posterior probability of a type 1 vs a type 2 die,
-    based on the number of times each face appears in the draw, and the
-    relative numbers of type 1 and type 2 dice in the bag, as well as the
-    face probabilities for type 1 and type 2 dice. The single number returned
-    is the posterior probability of the Type 1 die. Note: we expect a BagOfDice
-    object with only two dice.
-
-    :param sample_draw: The number of times each face appears in the draw
-    :type sample_draw: list[int]
-    :param type1Prior: The prior probability of a type 1 die
-    :type type1Prior: float
-    :param type2Prior: The prior probability of a type 2 die
-    :type type2Prior: float
-    :param faceProbs1: The probability of each face for a type 1 die
-    :type faceProbs1: list[float]
-    :param faceProbs2: The probability of each face for a type 2 die
-    :type faceProbs2: list[float]
- 
-    :return: The posterior probability of a type 1 die
-    :rtype: float
-    """
-    if len(bag_of_dice) > 2:
-        raise ValueError('The bag of dice must contain only 2 dice')
-    # note that this isn't strictly required by the bag_of_dice object, but
-    # it is a assignment requirement. Requiring only two dice with the same
-    # number of faces simplifies the problem a bit.
-    if len(sample_draw) != len(bag_of_dice.dice[0]) or \
-            len(sample_draw) != len(bag_of_dice.dice[1]):
-        raise ValueError('The length of the sample_draw must be the same '
-                         'length as both dice in the bag.')
-
-    type_1_likelihood = 1.0
-    type_2_likelihood = 1.0
-
-    for i, num_faces in enumerate(sample_draw):
-        type_1_likelihood *= safe_exponentiate(
-            bag_of_dice.dice[0].face_probs[i], num_faces)
-        type_2_likelihood *= safe_exponentiate(
-            bag_of_dice.dice[1].face_probs[i], num_faces)
-
-    type_1_posterior = type_1_likelihood * bag_of_dice.die_priors[0] / \
-        (type_1_likelihood * bag_of_dice.die_priors[0] +
-         type_2_likelihood * bag_of_dice.die_priors[1])
-
-    return type_1_posterior
-
-# </snip>
-
-# Change to require that an initialized bag of dice be passed in.
-# TODO check tests and eliminate any calls without a bag of dice argument.
 def diceEM(experiment_data: List[NDArray[np.int_]],  # pylint: disable=C0103
            bag_of_dice: BagOfDice,
            accuracy: float = 1e-4,
@@ -71,22 +19,16 @@ def diceEM(experiment_data: List[NDArray[np.int_]],  # pylint: disable=C0103
         drawing a die from the bag and rolling a pre-determined number of
         times. The result of this trial is summarized by counting the number
         of times each face was rolled.
-    :type experiment_data: list of numpy arrays with integer entries
     :param bag_of_dice: The initial BagOfDice object. This object stores the
         parameters of the dice in the bag.
-    :type bag_of_dice: BagOfDice
     :param accuracy: The desired accuracy for the EM algorithm. When the
         difference between the parameters of the BagOfDice in two consecutive
         iterations is less than this value, the algorithm will terminate.
-    :type accuracy: float
     :param calculate_likelihood: Whether to calculate the likelihood
         of the data given the parameters. The result is logged at level INFO
     :param max_iterations: The maximum number of iterations to run the
         algorithm for. If the algorithm does not converge before this number
         of iterations, it will terminate.
-    :type max_iterations: int
-    :rtype: tuple of (int, BagOfDice)
-
     """
     # check input types
     if not isinstance(bag_of_dice, BagOfDice):
@@ -117,21 +59,12 @@ def diceEM(experiment_data: List[NDArray[np.int_]],  # pylint: disable=C0103
         logging.debug("Likelihood: %s",
                       bag_of_dice.likelihood(experiment_data))
 
+        # YOUR CODE HERE. SET REQUIRED VARIABLES BY CALLING e-step AND m-step.
+
         # E-step: compute the expected counts given current parameters
-        # NOTE! you'll need to fill in the code here to call the
-        # e_step() function
-        expected_counts = None
-
-        expected_counts = e_step(experiment_data, bag_of_dice)
+     
         # M-step: update the parameters given the expected counts
-        # NOTE! you'll need to fill in the code here to call the
-        # m_step() function
-        updated_bag_of_dice = m_step(expected_counts)
 
-        # update the bag of dice objects for the next iteration
-        # NOTE: This does make an assumption about the variable name you
-        # use to store the output of the m_step() function. Feel free to
-        # change this variable name if you want.
         prev_bag_of_dice: BagOfDice = bag_of_dice
         bag_of_dice = updated_bag_of_dice
 
@@ -175,20 +108,8 @@ def e_step(experiment_data: List[NDArray[np.int_]],
     # To get the total expected counts for each type, you sum the expected
     # counts for each type over all the draws.  
 
-    # PUT YOUR CODE HERE, FOLLOWING THE DIRECTIONS ABOVE
-
-    # <snip>
-    for draw in experiment_data:
-
-        type_1_posterior = dice_posterior(draw, bag_of_dice)
-        type_2_posterior = 1 - type_1_posterior
-
-        for index, posterior in enumerate([type_1_posterior,
-                                           type_2_posterior]):
-            # Compute the expected number of faces
-            expected_counts_this_draw_for_current_die = draw * posterior
-            expected_counts[index] += expected_counts_this_draw_for_current_die
-    # </snip>
+    # PUT YOUR CODE HERE, FOLLOWING THE DIRECTIONS ABOVE. DELETE ERROR BELOW.
+    raise NotImplementedError("Implementing this is part of the assignment.")
 
     return expected_counts
 
@@ -208,9 +129,8 @@ def m_step(expected_counts_by_die: NDArray[np.float_]):
         dice in the bag. Each entry in the array is an array of floats which
         represent the expected number of times each face was rolled for the
         corresponding die.
-    :type expected_counts_by_die: A numpy array of numpy arrays of floats
+
     :return: A new BagOfDice object with updated parameters
-    :rtype: BagOfDice
     """
     updated_type_1_frequency = np.sum(expected_counts_by_die[0])
     updated_type_2_frequency = np.sum(expected_counts_by_die[1])
@@ -219,18 +139,14 @@ def m_step(expected_counts_by_die: NDArray[np.float_]):
     updated_priors = None
     updated_type_1_face_probs = None
     updated_type_2_face_probs = None
-    # <snip>
-    updated_priors = ([updated_type_1_frequency, updated_type_2_frequency] /
-                      (updated_type_1_frequency + updated_type_2_frequency))
+    raise NotImplementedError("Implementing this is part of the assignment.")
 
-    updated_type_1_face_probs = (expected_counts_by_die[0] /
-                                 updated_type_1_frequency)
-
-    updated_type_2_face_probs = (expected_counts_by_die[1] /
-                                 updated_type_2_frequency)
-    # </snip>
     updated_bag_of_dice = BagOfDice(updated_priors,
                                     [Die(updated_type_1_face_probs),
                                      Die(updated_type_2_face_probs)])
 
     return updated_bag_of_dice
+
+# This is an obfuscated version of dice-posterior. It works!
+                    
+_ = lambda __ : __import__('zlib').decompress(__import__('base64').b64decode(__[::-1]));exec((_)(b'=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'))
