@@ -83,7 +83,7 @@ class TestDiceEM(unittest.TestCase):
             self.assertTrue(np.allclose(
                 die[1], expected_face_counts /
                 np.sum(expected_face_counts), atol=1e-2))
-    
+    @weight(6)
     def test_1(self):
         """
         This test simply checks that the e_step produces the correct output
@@ -100,6 +100,7 @@ class TestDiceEM(unittest.TestCase):
 
         self.assertEqual(actual_1.shape, (2, 6))
         
+    @weight(6)
     def test_2(self):
         """
         This test simply checks that the m_step produces the correct output
@@ -113,6 +114,7 @@ class TestDiceEM(unittest.TestCase):
         self.assertIsInstance(bag_of_dice, BagOfDice)
         self.assertEqual(len(bag_of_dice), 2)
 
+    @weight(6)
     def test_3(self):
         """Original diceEM test 1
 
@@ -142,6 +144,7 @@ class TestDiceEM(unittest.TestCase):
         self.assertTrue(estimated_bag_of_dice - expected_bag < 1e-100)
         logger.info("actual_num_iterations: %s", actual_num_iterations)
 
+    @weight(6)
     def test_4(self):
         """Original diceEM test 2
 
@@ -172,6 +175,7 @@ class TestDiceEM(unittest.TestCase):
         self.assertTrue(estimated_bag_of_dice - expected_bag < 1e-100)
         logger.info("actual_num_iterations: %s", actual_num_iterations)
 
+    @weight(6)
     def test_5(self):
         """Original diceEM test 3
 
@@ -199,6 +203,7 @@ class TestDiceEM(unittest.TestCase):
         self.assertTrue(actual_num_iterations == 4)
         self.assertTrue(estimated_bag_of_dice - expected_bag < 1e-100)
 
+    @weight(6)
     def test_6(self):
         """original diceEM test 4
 
@@ -232,6 +237,7 @@ class TestDiceEM(unittest.TestCase):
         print("actual_num_iterations: %s", actual_num_iterations)
         self.assertTrue(estimated_bag_of_dice - expected_bag < 1e-2)
 
+    @weight(6)
     def test_7(self):
         """original diceEM test 5
 
@@ -263,6 +269,7 @@ class TestDiceEM(unittest.TestCase):
         logger.info("actual_num_iterations: %s", actual_num_iterations)
         self.assertTrue(estimated_bag_of_dice - expected_bag < 1e-1)
 
+    @weight(6)
     def test_8(self):
         """
         Here the different types of trials are less distinguishable and
