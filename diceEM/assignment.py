@@ -59,18 +59,17 @@ def diceEM(experiment_data: List[NDArray[np.int_]],  # pylint: disable=C0103
         logging.debug("Likelihood: %s",
                       bag_of_dice.likelihood(experiment_data))
 
+        # YOUR CODE HERE. SET REQUIRED VARIABLES BY CALLING e-step AND m-step.
+        # E-step: compute the expected counts given current parameters        
         # <snip>
         expected_counts = e_step(experiment_data, bag_of_dice)
+        # </snip>
 
         # M-step: update the parameters given the expected counts
+        # <snip>
         updated_bag_of_dice = m_step(expected_counts)
         # </snip>
-        # YOUR CODE HERE. SET REQUIRED VARIABLES BY CALLING e-step AND m-step.
-
-        # E-step: compute the expected counts given current parameters
      
-        # M-step: update the parameters given the expected counts
-
         prev_bag_of_dice: BagOfDice = bag_of_dice
         bag_of_dice = updated_bag_of_dice
 
